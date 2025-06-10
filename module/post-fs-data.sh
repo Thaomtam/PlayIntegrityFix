@@ -13,6 +13,13 @@ else
     fi
 fi
 
+# Hide action.sh if not using Magisk
+if [ -n "$MAGISK_VER_CODE" ]; then
+    [ -f "$MODPATH/action.sh" ] && mv -f "$MODPATH/action.sh" "$MODPATH/action.sh.old"
+else
+    [ -f "$MODPATH/action.sh.old" ] && mv -f "$MODPATH/action.sh.old" "$MODPATH/action.sh"
+fi
+
 # Conditional early sensitive properties
 
 # Samsung
