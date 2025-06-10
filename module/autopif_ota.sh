@@ -17,7 +17,7 @@ cd "$TEMPDIR"
 curhash="$(busybox crc32 $MODDIR/autopif.sh 2>/dev/null || echo 000000 )"
 
 # check
-download "https://raw.githubusercontent.com/KOWX712/PlayIntegrityFix/inject_vending/module/autopif.sh" "$TEMPDIR/temp_autopif.sh"
+download "https://raw.githubusercontent.com/KOWX712/PlayIntegrityFix/inject_manual/module/autopif.sh" "$TEMPDIR/temp_autopif.sh"
 
 if [ ! "$(busybox crc32 $TEMPDIR/temp_autopif.sh)" = "$curhash" ]; then
     cat "$TEMPDIR/temp_autopif.sh" > "$MODDIR/autopif.sh"
