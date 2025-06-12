@@ -2,67 +2,35 @@ name: Android CI
 
 on:
   push:
-    branches: inject_manual
-    paths-ignore: '**.md'
   workflow_dispatch:
 
 jobs:
-  build_vending:
+  build:
     runs-on: macos-15
 
     steps:
-    - name: Check out
-      uses: actions/checkout@v4
-      with:
-        submodules: 'recursive'
-        fetch-depth: 1
-        ref: inject_vending
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          fetch-depth: 1
+          ref: ${{ github.ref_name }}
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: 21
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew assembleRelease
+      - name: Build with Gradle
+        run: ./gradlew assembleRelease
 
-    - name: Upload CI module zip as artifact zip
-      uses: actions/upload-artifact@v4
-      with:
-        name: PlayIntegrityFix_${{ github.run_number }}-inject-vending
-        path: 'module/*'
-        compression-level: 9
-
-  build_manual:
-    runs-on: macos-15
-
-    steps:
-    - name: Check out
-      uses: actions/checkout@v4
-      with:
-        submodules: 'recursive'
-        fetch-depth: 1
-        ref: inject_manual
-
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: 21
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-      run: ./gradlew assembleRelease
-
-    - name: Upload CI module zip as artifact zip
-      uses: actions/upload-artifact@v4
-      with:
-        name: PlayIntegrityFix_${{ github.run_number }}-inject-manual
-        path: 'module/*'
-        compression-level: 9
+      - name: Upload module/ as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlayIntegrityFix_${{ github.run_number }}-${{ github.ref_name }}
+          path: 'module/*'
+          compression-level: 9
